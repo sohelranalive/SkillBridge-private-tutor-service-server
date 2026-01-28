@@ -1,12 +1,17 @@
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import routes from "./routes";
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth";
 
 // Initialize express app
 const app = express();
 
 // Json Parser
 app.use(express.json());
+
+// Better-auth handler
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 // Cors
 app.use(cors());

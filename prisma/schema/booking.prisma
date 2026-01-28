@@ -6,7 +6,7 @@ model Booking {
     student_id   String
     tutor_id     String
 
-    student Users @relation(fields: [student_id], references: [user_id])
+    student User @relation(fields: [student_id], references: [id])
 
     tutor TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
 }

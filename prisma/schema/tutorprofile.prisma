@@ -1,0 +1,13 @@
+model TutorProfile {
+    tutor_id           String  @id @default(uuid())
+    user_id            String
+    tutor_ratings      String?
+    tutor_availability Boolean @default(true)
+    tutor_category     String
+
+    tutor Users @relation(fields: [user_id], references: [user_id])
+
+    category Categories @relation(fields: [tutor_category], references: [category_id])
+
+    bookings Booking[]
+}

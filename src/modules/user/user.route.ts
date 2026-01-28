@@ -3,7 +3,9 @@ import express, { Request, Response } from "express";
 
 const router = express.Router();
 
-router.post("/register", (req: Request, res: Response) => {});
+router.get("/register", (req: Request, res: Response) => {
+  console.log("Hello");
+});
 
 // router.post("/register", userController.createUser);
 

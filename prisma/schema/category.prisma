@@ -2,5 +2,13 @@ model Categories {
     category_id   String @id @default(uuid())
     category_name String
 
-    tutor TutorProfile[]
+    tutor    TutorProfile[]
+    category Subjects[]
+}
+
+model Subjects {
+    subject_id       String     @id @default(uuid())
+    subject_name     String
+    subject_category String
+    category         Categories @relation(fields: [subject_category], references: [category_id])
 }

@@ -33,23 +33,23 @@ export const auth = betterAuth({
     autoSignIn: false,
   },
   hooks: {
-    // before: createAuthMiddleware(async (ctx) => {
-    //   // Execute before processing the request
-    //   console.log("Request path:", ctx.path);
-    // }),
     after: createAuthMiddleware(async (ctx) => {
-      // Execute after processing the request
+      const { user }: any = ctx.context.returned;
 
-      const {
-        user: { id: userId },
-      } = ctx.context.returned as {
-        user: { id: string };
-      };
-      await prisma.tutorProfile.create({
-        data: {
-          user_id: userId,
-        },
-      });
+      if (user) {
+        const {
+          user: { id, role },
+        } = ctx.context.returned as {
+          user: { id: string; role: string };
+        };
+        if (role === "TUTOR") {
+          await prisma.tutorProfile.create({
+            data: {
+              user_id: id,
+            },
+          });
+        }
+      }
     }),
   },
 });

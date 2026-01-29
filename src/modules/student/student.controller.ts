@@ -3,7 +3,8 @@ import { studentService } from "./student.service";
 
 // Create Booking
 const createBooking = async (req: Request, res: Response) => {
-  const result = await studentService.createBooking();
+  const data = req.body;
+  const result = await studentService.createBooking(data);
 
   res.status(200).json({
     message: "Data retrieved successfully",
@@ -11,7 +12,7 @@ const createBooking = async (req: Request, res: Response) => {
   });
 };
 
-// Get aLL booking
+// Get all booking
 const getAllBooking = async (req: Request, res: Response) => {
   const result = await studentService.getAllBooking();
 

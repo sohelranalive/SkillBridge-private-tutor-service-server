@@ -3,10 +3,10 @@ import { studentController } from "./student.controller";
 
 const router = express.Router();
 
-// Create Booking
+// Create booking
 router.post("/booking", studentController.createBooking);
 
-// Get aLL tutor
+// Get all booking
 router.get("/all-booking", studentController.getAllBooking);
 
 // // Get a single tutor by id

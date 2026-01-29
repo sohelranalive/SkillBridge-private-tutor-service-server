@@ -1,27 +1,22 @@
-import { TutorProfile } from "../../../generated/prisma/client";
+import { Booking } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
-// Get aLL booking
-const getAllBooking = async () => {
-  const result = await prisma.tutorProfile.findMany({
-    include: {
-      tutor: true,
-      category: true,
-      availability: true,
-      bookings: true,
+// Create booking
+const createBooking = async (data: Booking) => {
+  const result = await prisma.booking.create({
+    data: {
+      ...data,
     },
   });
   return result;
 };
 
-// Create booking
-const createBooking = async () => {
-  const result = await prisma.tutorProfile.findMany({
+// Get aLL booking
+const getAllBooking = async () => {
+  const result = await prisma.booking.findMany({
     include: {
       tutor: true,
-      category: true,
-      availability: true,
-      bookings: true,
+      student: true,
     },
   });
   return result;

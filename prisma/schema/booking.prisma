@@ -1,10 +1,9 @@
 model Booking {
-    booking_id   String   @id @default(uuid())
-    booking_slot DateTime
-    start_time   DateTime
-    end_time     DateTime
-    student_id   String
-    tutor_id     String
+    booking_id String   @id @default(uuid())
+    start_time DateTime
+    end_time   DateTime
+    student_id String
+    tutor_id   String
 
     student User @relation(fields: [student_id], references: [id])
 

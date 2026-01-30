@@ -5,7 +5,18 @@ import authentication from "../../middleware/authentication";
 const router = express.Router();
 
 // Create booking
-router.post("/booking", studentController.createBooking);
+router.post(
+  "/booking",
+  authentication("STUDENT"),
+  studentController.createBooking,
+);
+
+// Get all booking by Id
+router.get(
+  "/all-booking/:id",
+  authentication("STUDENT"),
+  studentController.getAllBookingById,
+);
 
 // Get all booking
 router.get(
@@ -13,14 +24,5 @@ router.get(
   authentication("STUDENT", "ADMIN"),
   studentController.getAllBooking,
 );
-
-// // Get a single tutor by id
-// router.get("/tutor-profile/:id", tutorController.getASingleTutorByID);
-
-// // Update tutor profile
-// router.patch(
-//   "/tutor-profile/update/:id",
-//   tutorController.updateTutorProfileByID,
-// );
 
 export const studentRouter = router;

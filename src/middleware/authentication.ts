@@ -8,7 +8,7 @@ const authentication = (...roles: string[]) => {
         headers: req.headers as any,
       });
 
-      console.log(session);
+      // console.log(session);
 
       if (!session) {
         res.status(401).json({
@@ -34,7 +34,7 @@ const authentication = (...roles: string[]) => {
         status: session?.user.status as string,
       };
 
-      console.log(req.user);
+      // console.log(req.user);
 
       if (roles.length && !roles.includes(req.user.role)) {
         res.status(403).json({

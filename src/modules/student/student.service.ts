@@ -11,6 +11,20 @@ const createBooking = async (data: Booking) => {
   return result;
 };
 
+// Get all booking by Id
+const getAllBookingById = async (id: string) => {
+  const result = await prisma.booking.findMany({
+    where: {
+      student_id: id,
+    },
+    include: {
+      tutor: true,
+      student: true,
+    },
+  });
+  return result;
+};
+
 // Get aLL booking
 const getAllBooking = async () => {
   const result = await prisma.booking.findMany({
@@ -23,6 +37,7 @@ const getAllBooking = async () => {
 };
 
 export const studentService = {
+  getAllBookingById,
   getAllBooking,
   createBooking,
 };

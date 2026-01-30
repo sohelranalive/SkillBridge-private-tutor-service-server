@@ -12,6 +12,17 @@ const createBooking = async (req: Request, res: Response) => {
   });
 };
 
+// Get all booking by Id
+const getAllBookingById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const result = await studentService.getAllBookingById(id as string);
+
+  res.status(200).json({
+    message: "Data retrieved successfully",
+    data: result,
+  });
+};
+
 // Get all booking
 const getAllBooking = async (req: Request, res: Response) => {
   const result = await studentService.getAllBooking();
@@ -23,6 +34,7 @@ const getAllBooking = async (req: Request, res: Response) => {
 };
 
 export const studentController = {
+  getAllBookingById,
   getAllBooking,
   createBooking,
 };

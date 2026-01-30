@@ -2,15 +2,23 @@
   "name": "skillbridge-private-tutor-service-server",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/sohelranalive/SkillBridge-private-tutor-service-server#readme",
+  "bugs": {
+    "url": "https://github.com/sohelranalive/SkillBridge-private-tutor-service-server/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sohelranalive/SkillBridge-private-tutor-service-server.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tsx watch src/server.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "module",
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",

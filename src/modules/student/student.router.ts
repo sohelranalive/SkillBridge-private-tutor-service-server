@@ -1,5 +1,6 @@
 import express from "express";
 import { studentController } from "./student.controller";
+import authentication from "../../middleware/authentication";
 
 const router = express.Router();
 
@@ -7,7 +8,11 @@ const router = express.Router();
 router.post("/booking", studentController.createBooking);
 
 // Get all booking
-router.get("/all-booking", studentController.getAllBooking);
+router.get(
+  "/all-booking",
+  authentication("STUDENT", "ADMIN"),
+  studentController.getAllBooking,
+);
 
 // // Get a single tutor by id
 // router.get("/tutor-profile/:id", tutorController.getASingleTutorByID);

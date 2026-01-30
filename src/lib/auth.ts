@@ -32,24 +32,21 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false,
   },
-  hooks: {
-    after: createAuthMiddleware(async (ctx) => {
-      const { user }: any = ctx.context.returned;
 
-      if (user) {
-        const {
-          user: { id, role },
-        } = ctx.context.returned as {
-          user: { id: string; role: string };
-        };
-        if (role === "TUTOR") {
-          await prisma.tutorProfile.create({
-            data: {
-              user_id: id,
-            },
-          });
-        }
-      }
-    }),
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          if (user.role === "TUTOR") {
+            const data = {
+              user_id: user.id as string,
+            };
+            await prisma.tutorProfile.create({
+              data,
+            });
+          }
+        },
+      },
+    },
   },
 });

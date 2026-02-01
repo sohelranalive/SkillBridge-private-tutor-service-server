@@ -36,8 +36,22 @@ const getAllBooking = async () => {
   return result;
 };
 
+// Get aLL students
+const getAllStudents = async () => {
+  const result = await prisma.user.findMany({
+    where: {
+      role: "STUDENT",
+    },
+    include: {
+      bookings: true,
+    },
+  });
+  return result;
+};
+
 export const studentService = {
   getAllBookingById,
   getAllBooking,
   createBooking,
+  getAllStudents,
 };

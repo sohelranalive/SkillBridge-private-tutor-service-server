@@ -1,11 +1,11 @@
 model TutorProfile {
     tutor_id       String   @id @default(uuid())
-    user_id        String
+    user_id        String   @unique
     isFeatured     Boolean  @default(false)
-    rating         Int?
+    ratings        Int?
     price          Int?
     subjects       String[]
-    tutor_ratings  String?
+    tutor_reviews  String?
     tutor_category String?
 
     tutor    User        @relation(fields: [user_id], references: [id])

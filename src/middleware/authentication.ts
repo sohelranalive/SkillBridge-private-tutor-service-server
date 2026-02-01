@@ -8,8 +8,6 @@ const authentication = (...roles: string[]) => {
         headers: req.headers as any,
       });
 
-      // console.log(session);
-
       if (!session) {
         res.status(401).json({
           success: false,
@@ -34,16 +32,14 @@ const authentication = (...roles: string[]) => {
         status: session?.user.status as string,
       };
 
-      // console.log(req.user);
-
       if (roles.length && !roles.includes(req.user.role)) {
         res.status(403).json({
           success: false,
           message: "Forbidden ! You don't have permission to access",
         });
+      } else {
+        next();
       }
-
-      next();
     } catch (error) {
       next(error);
     }

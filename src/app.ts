@@ -10,9 +10,6 @@ const app = express();
 // Json Parser
 app.use(express.json());
 
-// Better-auth handler
-app.all("/api/auth/*splat", toNodeHandler(auth));
-
 // Cors
 app.use(cors());
 
@@ -20,6 +17,9 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send(`Welcome to SkillBridge Backend`);
 });
+
+// Better-auth handler
+app.all("/api/auth/*splat", toNodeHandler(auth));
 
 // All Routes
 app.use("/api/v1", routes);

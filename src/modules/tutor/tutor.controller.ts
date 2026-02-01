@@ -60,8 +60,42 @@ const updateTutorProfileByID = async (req: Request, res: Response) => {
   });
 };
 
+// Set tutors Availability
+const setTutorAvailability = async (req: Request, res: Response) => {
+  const data = req.body;
+  const result = await tutorService.setTutorAvailability(data);
+
+  res.status(200).json({
+    message: "Data retrieved successfully",
+    data: result,
+  });
+};
+
+// tutors all sessions
+const tutorSessionsById = async (req: Request, res: Response) => {
+  const userId = req.user?.id;
+  const result = await tutorService.tutorSessionsById(userId as string);
+  res.status(200).json({
+    message: "Data retrieved successfully",
+    data: result,
+  });
+};
+
+// get all tutors
+const getAllTutors = async (req: Request, res: Response) => {
+  const result = await tutorService.getAllTutors();
+
+  res.status(200).json({
+    message: "Data retrieved successfully",
+    data: result,
+  });
+};
+
 export const tutorController = {
+  tutorSessionsById,
+  setTutorAvailability,
   getAllTutor,
   getASingleTutorByID,
   updateTutorProfileByID,
+  getAllTutors,
 };

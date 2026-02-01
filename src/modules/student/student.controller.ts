@@ -33,8 +33,19 @@ const getAllBooking = async (req: Request, res: Response) => {
   });
 };
 
+// get all students
+const getAllStudents = async (req: Request, res: Response) => {
+  const result = await studentService.getAllStudents();
+
+  res.status(200).json({
+    message: "Data retrieved successfully",
+    data: result,
+  });
+};
+
 export const studentController = {
   getAllBookingById,
   getAllBooking,
   createBooking,
+  getAllStudents,
 };

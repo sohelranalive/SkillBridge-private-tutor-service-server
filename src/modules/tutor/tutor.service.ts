@@ -1,4 +1,7 @@
-import { TutorProfile } from "../../../generated/prisma/client";
+import {
+  AvailabilitySlot,
+  TutorProfile,
+} from "../../../generated/prisma/client";
 import { TutorProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
@@ -86,8 +89,63 @@ const updateTutorProfileByID = async (
   return result;
 };
 
+// Set tutors availability
+const setTutorAvailability = async (data: any) => {
+  const result = await prisma.availabilitySlot.create({
+    data: {
+      ...data,
+    },
+  });
+  return result;
+};
+
+// tutors all sessions
+const tutorSessionsById = async (id: string) => {
+  const result = await prisma.tutorProfile.findUniqueOrThrow({
+    where: {
+      user_id: id,
+    },
+    include: {
+      availability: true,
+    },
+  });
+
+  // if (!resultUser) {
+  //   throw new Error("Couldn't found user and his associations slots !!!");
+  // }
+
+  // const result = await prisma.availabilitySlot.findMany({
+  //   where: {
+  //     tutor_id: resultUser.tutor_id,
+  //   },
+  // });
+
+  return result;
+};
+
+// Get aLL tutor
+const getAllTutors = async () => {
+  const result = await prisma.user.findMany({
+    where: {
+      role: "TUTOR",
+    },
+    include: {
+      tutor: {
+        include: {
+          bookings: true,
+          category: true,
+        },
+      },
+    },
+  });
+  return result;
+};
+
 export const tutorService = {
+  tutorSessionsById,
+  setTutorAvailability,
   getAllTutor,
   getASingleTutorByID,
   updateTutorProfileByID,
+  getAllTutors,
 };

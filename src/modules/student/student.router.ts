@@ -25,4 +25,7 @@ router.get(
   studentController.getAllBooking,
 );
 
+// get all students
+router.get("/all-students", studentController.getAllStudents);
+
 export const studentRouter = router;

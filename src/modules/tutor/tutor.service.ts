@@ -1,14 +1,56 @@
 import { TutorProfile } from "../../../generated/prisma/client";
+import { TutorProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 // Get aLL tutor
-const getAllTutor = async () => {
+const getAllTutor = async ({
+  search,
+  isFeatured,
+  subject,
+  rating,
+  price,
+  category,
+}: {
+  search: string | undefined;
+  isFeatured: boolean | undefined;
+  subject: string | undefined;
+  rating: number | undefined;
+  price: number | undefined;
+  category: string | undefined;
+}) => {
+  const andConditions: TutorProfileWhereInput[] = [];
+
+  if (search) {
+    andConditions.push({
+      OR: [
+        {
+          subjects: {
+            has: search as string,
+          },
+        },
+        // {
+        //   categories: {
+        //     contains: search as string,
+        //     mode: "insensitive",
+        //   },
+        // },
+      ],
+    });
+  }
+
+  if (typeof isFeatured === "boolean") {
+    andConditions.push({
+      isFeatured,
+    });
+  }
+
   const result = await prisma.tutorProfile.findMany({
+    where: {
+      AND: andConditions,
+    },
     include: {
       tutor: true,
       category: true,
-      availability: true,
-      bookings: true,
     },
   });
   return result;

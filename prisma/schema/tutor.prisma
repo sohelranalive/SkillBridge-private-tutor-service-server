@@ -1,6 +1,9 @@
 model TutorProfile {
     tutor_id       String   @id @default(uuid())
     user_id        String
+    isFeatured     Boolean  @default(false)
+    rating         Int?
+    price          Int?
     subjects       String[]
     tutor_ratings  String?
     tutor_category String?

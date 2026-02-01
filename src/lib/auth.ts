@@ -1,9 +1,6 @@
 import { betterAuth, sessionSchema } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
-import { InsertIntoTutorTable } from "../helpers/StoreTutor";
-import { createAuthMiddleware } from "better-auth/api";
-import { User } from "../../generated/prisma/client";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {

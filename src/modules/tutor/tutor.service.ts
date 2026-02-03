@@ -5,19 +5,19 @@ import {
 import { TutorProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
-// Get aLL tutor
+// Get all tutors
 const getAllTutor = async ({
   search,
   isFeatured,
   subject,
-  rating,
+  ratings,
   price,
   category,
 }: {
   search: string | undefined;
   isFeatured: boolean | undefined;
   subject: string | undefined;
-  rating: number | undefined;
+  ratings: number | undefined;
   price: number | undefined;
   category: string | undefined;
 }) => {
@@ -30,13 +30,13 @@ const getAllTutor = async ({
           subjects: {
             has: search as string,
           },
+          category: {
+            category_name: {
+              contains: search as string,
+              mode: "insensitive",
+            },
+          },
         },
-        // {
-        //   categories: {
-        //     contains: search as string,
-        //     mode: "insensitive",
-        //   },
-        // },
       ],
     });
   }
@@ -46,6 +46,41 @@ const getAllTutor = async ({
       isFeatured,
     });
   }
+
+  if (subject) {
+    andConditions.push({
+      subjects: {
+        has: subject as string,
+      },
+    });
+  }
+
+  if (ratings && ratings > 0) {
+    const rating = Number(ratings);
+    andConditions.push({
+      ratings: { in: [rating] },
+    });
+  }
+
+  if (price && price > 0) {
+    const rate = Number(price);
+    andConditions.push({
+      price: { in: [rate] },
+    });
+  }
+
+  if (category) {
+    andConditions.push({
+      category: {
+        category_name: {
+          contains: category as string,
+          mode: "insensitive",
+        },
+      },
+    });
+  }
+
+  console.log("AND Conditions: ", JSON.stringify(andConditions, null, 2));
 
   const result = await prisma.tutorProfile.findMany({
     where: {
@@ -110,34 +145,6 @@ const tutorSessionsById = async (id: string) => {
     },
   });
 
-  // if (!resultUser) {
-  //   throw new Error("Couldn't found user and his associations slots !!!");
-  // }
-
-  // const result = await prisma.availabilitySlot.findMany({
-  //   where: {
-  //     tutor_id: resultUser.tutor_id,
-  //   },
-  // });
-
-  return result;
-};
-
-// Get aLL tutor
-const getAllTutors = async () => {
-  const result = await prisma.user.findMany({
-    where: {
-      role: "TUTOR",
-    },
-    include: {
-      tutor: {
-        include: {
-          bookings: true,
-          category: true,
-        },
-      },
-    },
-  });
   return result;
 };
 
@@ -147,5 +154,4 @@ export const tutorService = {
   getAllTutor,
   getASingleTutorByID,
   updateTutorProfileByID,
-  getAllTutors,
 };

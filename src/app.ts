@@ -13,7 +13,14 @@ const app = express();
 app.use(express.json());
 
 // Cors
-app.use(cors());
+// app.use(cors());
+
+app.use(
+  cors({
+    origin: process.env.APP_AUTH_URL || "http://localhost:3000", // client side url
+    credentials: true,
+  }),
+);
 
 // Root route
 app.get("/", (req, res) => {

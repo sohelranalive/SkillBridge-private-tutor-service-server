@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { tutorService } from "./tutor.service";
 import { TutorProfile } from "../../../generated/prisma/client";
 
-// Get aLL tutor
+// Get all tutors
 const getAllTutor = async (req: Request, res: Response) => {
   const search = req.query.search as string | undefined;
 
@@ -16,7 +16,7 @@ const getAllTutor = async (req: Request, res: Response) => {
 
   const subject = req.query.subject as string | undefined;
 
-  const rating = req.query.rating as number | undefined;
+  const ratings = req.query.ratings as number | undefined;
 
   const price = req.query.price as number | undefined;
 
@@ -26,7 +26,7 @@ const getAllTutor = async (req: Request, res: Response) => {
     search,
     isFeatured,
     subject,
-    rating,
+    ratings,
     price,
     category,
   });
@@ -81,21 +81,10 @@ const tutorSessionsById = async (req: Request, res: Response) => {
   });
 };
 
-// get all tutors
-const getAllTutors = async (req: Request, res: Response) => {
-  const result = await tutorService.getAllTutors();
-
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
-};
-
 export const tutorController = {
   tutorSessionsById,
   setTutorAvailability,
   getAllTutor,
   getASingleTutorByID,
   updateTutorProfileByID,
-  getAllTutors,
 };

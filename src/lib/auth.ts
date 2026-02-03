@@ -13,14 +13,13 @@ export const auth = betterAuth({
         type: "string",
         required: false,
       },
+      image: {
+        type: "string",
+        required: false,
+      },
       role: {
         type: "string",
         defaultValue: "STUDENT",
-        required: false,
-      },
-      status: {
-        type: "string",
-        defaultValue: "ACTIVE",
         required: false,
       },
     },
@@ -28,6 +27,14 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
+  },
+  socialProviders: {
+    google: {
+      prompt: "select_account consent",
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      accessType: "offline",
+    },
   },
 
   databaseHooks: {

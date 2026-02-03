@@ -32,7 +32,7 @@ async function seedAdmin() {
       },
     );
 
-    console.log(signUpAdmin);
+    // console.log(signUpAdmin);
 
     if (signUpAdmin.ok) {
       await prisma.user.update({

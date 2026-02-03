@@ -35,6 +35,16 @@ const addNewCategory = async (req: Request, res: Response) => {
   });
 };
 
+// Get all category
+const allCategory = async (req: Request, res: Response) => {
+  const result = await adminService.allCategory();
+
+  res.status(200).json({
+    message: "Data retrieved successfully",
+    data: result,
+  });
+};
+
 // update category
 const updateCategory = async (req: Request, res: Response) => {
   const id = req.params.id;
@@ -52,4 +62,5 @@ export const adminController = {
   getAllBookings,
   updateUserStatusById,
   addNewCategory,
+  allCategory,
 };

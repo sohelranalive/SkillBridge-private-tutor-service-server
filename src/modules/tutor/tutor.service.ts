@@ -80,7 +80,7 @@ const getAllTutor = async ({
     });
   }
 
-  console.log("AND Conditions: ", JSON.stringify(andConditions, null, 2));
+  // console.log("AND Conditions: ", JSON.stringify(andConditions, null, 2));
 
   const result = await prisma.tutorProfile.findMany({
     where: {

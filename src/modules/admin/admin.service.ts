@@ -1,6 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import { UserStatus } from "../../../generated/prisma/enums";
 import { Categories } from "../../../generated/prisma/client";
+import { _includes, includes } from "better-auth/*";
 
 // view all bookings
 const getAllBookings = async () => {
@@ -29,6 +30,18 @@ const addNewCategory = async (data: any) => {
   return result;
 };
 
+// Get all category
+const allCategory = async () => {
+  const result = await prisma.categories.findMany({
+    include: {
+      _count: {
+        select: { tutor: true },
+      },
+    },
+  });
+  return result;
+};
+
 // update category
 const updateCategory = async (id: string, data: any) => {
   const result = await prisma.categories.update({
@@ -46,4 +59,5 @@ export const adminService = {
   getAllBookings,
   updateUserStatusById,
   updateCategory,
+  allCategory,
 };

@@ -25,6 +25,9 @@ router.post(
   adminController.addNewCategory,
 );
 
+// get all category
+router.get("/all-category", adminController.allCategory);
+
 // update category by id
 router.post(
   "/update-category/:id",

@@ -2,7 +2,7 @@ model TutorProfile {
     tutor_id       String   @id @default(uuid())
     user_id        String   @unique
     isFeatured     Boolean  @default(false)
-    ratings        Int?
+    ratings        Float?
     price          Int?
     subjects       String[]
     tutor_reviews  String?
@@ -13,6 +13,7 @@ model TutorProfile {
 
     availability AvailabilitySlot[]
     bookings     Booking[]
+    reviews      Reviews[]
 }
 
 model AvailabilitySlot {
@@ -24,4 +25,14 @@ model AvailabilitySlot {
     tutor TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
 
     @@index([tutor_id, start_time, end_time])
+}
+
+model Reviews {
+    id         String @id @default(uuid())
+    tutor_id   String
+    reviewBy   String
+    reviewText String
+
+    tutor   TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
+    student User         @relation(fields: [reviewText], references: [id])
 }

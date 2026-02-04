@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "TutorProfile" ALTER COLUMN "ratings" SET DATA TYPE DOUBLE PRECISION;

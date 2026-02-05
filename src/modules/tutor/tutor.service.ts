@@ -101,10 +101,19 @@ const getASingleTutorByID = async (id: string) => {
       tutor_id: id,
     },
     include: {
-      tutor: true,
-      category: true,
-      availability: true,
-      bookings: true,
+      tutor: {
+        select: {
+          name: true,
+          image: true,
+          role: true,
+          status: true,
+        },
+      },
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
     },
   });
   return result;

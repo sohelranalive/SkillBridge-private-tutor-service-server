@@ -2,11 +2,13 @@ model TutorProfile {
     tutor_id       String   @id @default(uuid())
     user_id        String   @unique
     isFeatured     Boolean  @default(false)
-    ratings        Float?
+    isVerified     Boolean  @default(true)
+    about          String?
     price          Int?
-    subjects       String[]
-    tutor_reviews  String?
     tutor_category String?
+    education      String[]
+    subjects       String[]
+    language       String[]
 
     tutor    User        @relation(fields: [user_id], references: [id])
     category Categories? @relation(fields: [tutor_category], references: [category_id])
@@ -29,10 +31,11 @@ model AvailabilitySlot {
 
 model Reviews {
     id         String @id @default(uuid())
-    tutor_id   String
-    reviewBy   String
     reviewText String
+    ratings    Float
+    tutor_id   String
+    student_id String
 
     tutor   TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
-    student User         @relation(fields: [reviewText], references: [id])
+    student User         @relation(fields: [student_id], references: [id])
 }

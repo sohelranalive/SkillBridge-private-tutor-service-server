@@ -10,14 +10,12 @@ const getAllTutor = async ({
   search,
   isFeatured,
   subject,
-  ratings,
   price,
   category,
 }: {
   search: string | undefined;
   isFeatured: boolean | undefined;
   subject: string | undefined;
-  ratings: number | undefined;
   price: number | undefined;
   category: string | undefined;
 }) => {
@@ -52,13 +50,6 @@ const getAllTutor = async ({
       subjects: {
         has: subject as string,
       },
-    });
-  }
-
-  if (ratings && ratings > 0) {
-    const rating = Number(ratings);
-    andConditions.push({
-      ratings: { in: [rating] },
     });
   }
 

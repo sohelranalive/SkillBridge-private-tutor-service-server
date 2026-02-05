@@ -16,8 +16,6 @@ const getAllTutor = async (req: Request, res: Response) => {
 
   const subject = req.query.subject as string | undefined;
 
-  const ratings = req.query.ratings as number | undefined;
-
   const price = req.query.price as number | undefined;
 
   const category = req.query.category as string | undefined;
@@ -26,7 +24,6 @@ const getAllTutor = async (req: Request, res: Response) => {
     search,
     isFeatured,
     subject,
-    ratings,
     price,
     category,
   });

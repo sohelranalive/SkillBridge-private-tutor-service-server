@@ -3,6 +3,18 @@ import { UserStatus } from "../../../generated/prisma/enums";
 import { Categories } from "../../../generated/prisma/client";
 import { _includes, includes } from "better-auth/*";
 
+// Get all category
+const allCategory = async () => {
+  const result = await prisma.categories.findMany({
+    include: {
+      _count: {
+        select: { tutor: true },
+      },
+    },
+  });
+  return result;
+};
+
 // view all bookings
 const getAllBookings = async () => {
   const result = await prisma.booking.findMany();
@@ -27,18 +39,6 @@ const addNewCategory = async (data: any) => {
     data,
   });
 
-  return result;
-};
-
-// Get all category
-const allCategory = async () => {
-  const result = await prisma.categories.findMany({
-    include: {
-      _count: {
-        select: { tutor: true },
-      },
-    },
-  });
   return result;
 };
 

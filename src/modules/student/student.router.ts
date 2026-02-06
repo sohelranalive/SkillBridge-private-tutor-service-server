@@ -4,6 +4,9 @@ import authentication from "../../middleware/authentication";
 
 const router = express.Router();
 
+// Get all reviews
+router.get("/all-review", studentController.getAllReviews);
+
 // Create booking
 router.post(
   "/booking",

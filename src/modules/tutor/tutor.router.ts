@@ -4,8 +4,8 @@ import authentication from "../../middleware/authentication";
 
 const router = express.Router();
 
-// Get all tutors
-router.get("/all-tutors", tutorController.getAllTutor);
+// Get all tutor
+router.get("/all-tutor", tutorController.getAllTutor);
 
 // Get a single tutor by id
 router.get("/tutor-profile/:id", tutorController.getASingleTutorByID);

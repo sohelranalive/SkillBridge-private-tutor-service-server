@@ -2,36 +2,43 @@ import { Request, Response } from "express";
 import { tutorService } from "./tutor.service";
 import { TutorProfile } from "../../../generated/prisma/client";
 
-// Get all tutors
+// Get all tutor
 const getAllTutor = async (req: Request, res: Response) => {
-  const search = req.query.search as string | undefined;
+  try {
+    const search = req.query.search as string | undefined;
 
-  const isFeatured = req.query.isFeatured
-    ? req.query.isFeatured === "true"
-      ? true
-      : req.query.isFeatured === "false"
-        ? false
-        : undefined
-    : undefined;
+    const isFeatured = req.query.isFeatured
+      ? req.query.isFeatured === "true"
+        ? true
+        : req.query.isFeatured === "false"
+          ? false
+          : undefined
+      : undefined;
 
-  const subject = req.query.subject as string | undefined;
+    const subject = req.query.subject as string | undefined;
 
-  const price = req.query.price as number | undefined;
+    const price = req.query.price as number | undefined;
 
-  const category = req.query.category as string | undefined;
+    const category = req.query.category as string | undefined;
 
-  const result = await tutorService.getAllTutor({
-    search,
-    isFeatured,
-    subject,
-    price,
-    category,
-  });
+    const result = await tutorService.getAllTutor({
+      search,
+      isFeatured,
+      subject,
+      price,
+      category,
+    });
 
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // Get a single tutor by id

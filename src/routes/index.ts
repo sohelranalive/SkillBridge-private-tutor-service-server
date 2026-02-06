@@ -5,10 +5,10 @@ import { adminRouter } from "../modules/admin/admin.router";
 
 const routes = Router();
 
+routes.use("/admin", adminRouter);
+
 routes.use("/tutor", tutorRouter);
 
 routes.use("/student", studentRouter);
-
-routes.use("/user", adminRouter);
 
 export default routes;

@@ -5,7 +5,7 @@ import {
 import { TutorProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
-// Get all tutors
+// Get all tutor
 const getAllTutor = async ({
   search,
   isFeatured,
@@ -71,15 +71,16 @@ const getAllTutor = async ({
     });
   }
 
-  // console.log("AND Conditions: ", JSON.stringify(andConditions, null, 2));
-
   const result = await prisma.tutorProfile.findMany({
     where: {
       AND: andConditions,
     },
     include: {
-      tutor: true,
+      user: true,
       category: true,
+    },
+    orderBy: {
+      price: "asc",
     },
   });
   return result;
@@ -92,7 +93,7 @@ const getASingleTutorByID = async (id: string) => {
       tutor_id: id,
     },
     include: {
-      tutor: {
+      user: {
         select: {
           name: true,
           image: true,

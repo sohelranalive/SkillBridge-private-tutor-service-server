@@ -1,6 +1,23 @@
 import { Request, Response } from "express";
 import { adminService } from "./admin.service";
 
+// Get all category
+const allCategory = async (req: Request, res: Response) => {
+  try {
+    const result = await adminService.allCategory();
+
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // get all bookings
 const getAllBookings = async (req: Request, res: Response) => {
   const result = await adminService.getAllBookings();
@@ -28,16 +45,6 @@ const updateUserStatusById = async (req: Request, res: Response) => {
 const addNewCategory = async (req: Request, res: Response) => {
   const data = req.body;
   const result = await adminService.addNewCategory(data);
-
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
-};
-
-// Get all category
-const allCategory = async (req: Request, res: Response) => {
-  const result = await adminService.allCategory();
 
   res.status(200).json({
     message: "Data retrieved successfully",

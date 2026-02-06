@@ -4,6 +4,9 @@ import authentication from "../../middleware/authentication";
 
 const router = express.Router();
 
+// Get all category
+router.get("/all-category", adminController.allCategory);
+
 // view all bookings
 router.get(
   "/all-bookings",
@@ -24,9 +27,6 @@ router.post(
   authentication("ADMIN"),
   adminController.addNewCategory,
 );
-
-// get all category
-router.get("/all-category", adminController.allCategory);
 
 // update category by id
 router.post(

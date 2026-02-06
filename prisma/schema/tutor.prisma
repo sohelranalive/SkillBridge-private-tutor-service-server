@@ -10,7 +10,7 @@ model TutorProfile {
     subjects       String[]
     language       String[]
 
-    tutor    User        @relation(fields: [user_id], references: [id])
+    user     User        @relation(fields: [user_id], references: [id])
     category Categories? @relation(fields: [tutor_category], references: [category_id])
 
     availability AvailabilitySlot[]

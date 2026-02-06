@@ -1,6 +1,19 @@
 import { Booking } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
+// Get all reviews
+const getAllReviews = async () => {
+  const result = await prisma.reviews.findMany({
+    include: {
+      student: true,
+    },
+    orderBy: {
+      ratings: "desc",
+    },
+  });
+  return result;
+};
+
 // Create booking
 const createBooking = async (data: Booking) => {
   const result = await prisma.booking.create({
@@ -50,6 +63,7 @@ const getAllStudents = async () => {
 };
 
 export const studentService = {
+  getAllReviews,
   getAllBookingById,
   getAllBooking,
   createBooking,

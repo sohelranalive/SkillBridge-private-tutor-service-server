@@ -1,6 +1,23 @@
 import { Request, Response } from "express";
 import { studentService } from "./student.service";
 
+// Get all reviews
+const getAllReviews = async (req: Request, res: Response) => {
+  try {
+    const result = await studentService.getAllReviews();
+
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // Create Booking
 const createBooking = async (req: Request, res: Response) => {
   const data = req.body;
@@ -44,6 +61,7 @@ const getAllStudents = async (req: Request, res: Response) => {
 };
 
 export const studentController = {
+  getAllReviews,
   getAllBookingById,
   getAllBooking,
   createBooking,

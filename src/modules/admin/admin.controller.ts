@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { adminService } from "./admin.service";
 
-// Get all category
+// Get all category ✔✔✔
 const allCategory = async (req: Request, res: Response) => {
   try {
     const result = await adminService.allCategory();

@@ -1,11 +1,14 @@
 model Booking {
-    booking_id String   @id @default(uuid())
-    start_time DateTime
-    end_time   DateTime
-    student_id String
-    tutor_id   String
+  booking_id      String   @id @default(uuid())
+  start_time      DateTime
+  end_time        DateTime
+  student_id      String
+  tutor_id        String
+  availability_id String
 
-    student User @relation(fields: [student_id], references: [id])
+  student      User             @relation(fields: [student_id], references: [id])
+  tutor        TutorProfile     @relation(fields: [tutor_id], references: [tutor_id])
+  availability AvailabilitySlot @relation(fields: [availability_id], references: [id])
 
-    tutor TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
+  @@unique([student_id, availability_id])
 }

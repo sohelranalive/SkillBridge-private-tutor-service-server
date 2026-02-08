@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { tutorService } from "./tutor.service";
 import { TutorProfile } from "../../../generated/prisma/client";
+import paginationHelper from "../../helpers/paginationHelper";
 
-// Get all tutor
+// Get all tutor ✔✔✔
 const getAllTutor = async (req: Request, res: Response) => {
   try {
     const search = req.query.search as string | undefined;
@@ -15,18 +16,26 @@ const getAllTutor = async (req: Request, res: Response) => {
           : undefined
       : undefined;
 
-    const subject = req.query.subject as string | undefined;
-
     const price = req.query.price as number | undefined;
 
+    const ratings = req.query.ratings as number | undefined;
+
     const category = req.query.category as string | undefined;
+
+    const options = paginationHelper(req.query);
+    const { page, limit, skip, sortBy, sortOrder } = options;
 
     const result = await tutorService.getAllTutor({
       search,
       isFeatured,
-      subject,
       price,
       category,
+      ratings,
+      page,
+      limit,
+      skip,
+      sortBy,
+      sortOrder,
     });
 
     res.status(200).json({
@@ -41,15 +50,40 @@ const getAllTutor = async (req: Request, res: Response) => {
   }
 };
 
-// Get a single tutor by id
+// Get a single tutor by id ✔✔✔
 const getASingleTutorByID = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const result = await tutorService.getASingleTutorByID(id as string);
+  try {
+    const id = req.params.id;
+    const result = await tutorService.getASingleTutorByID(id as string);
 
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get tutor by user id ✔✔✔
+const getTutorByUserId = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await tutorService.getTutorByUserId(id as string);
+
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 // Update tutor profile
@@ -90,5 +124,6 @@ export const tutorController = {
   setTutorAvailability,
   getAllTutor,
   getASingleTutorByID,
+  getTutorByUserId,
   updateTutorProfileByID,
 };

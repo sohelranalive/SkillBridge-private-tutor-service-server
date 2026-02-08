@@ -3,7 +3,7 @@ import { UserStatus } from "../../../generated/prisma/enums";
 import { Categories } from "../../../generated/prisma/client";
 import { _includes, includes } from "better-auth/*";
 
-// Get all category
+// Get all category ✔✔✔
 const allCategory = async () => {
   const result = await prisma.categories.findMany({
     include: {
@@ -12,6 +12,7 @@ const allCategory = async () => {
       },
     },
   });
+
   return result;
 };
 

@@ -4,7 +4,7 @@ import authentication from "../../middleware/authentication";
 
 const router = express.Router();
 
-// Get all category
+// Get all category ✔✔✔
 router.get("/all-category", adminController.allCategory);
 
 // view all bookings

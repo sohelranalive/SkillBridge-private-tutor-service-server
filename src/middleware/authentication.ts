@@ -11,7 +11,7 @@ const authentication = (...roles: string[]) => {
       if (!session) {
         res.status(401).json({
           success: false,
-          message: "You are not authorized",
+          message: "You are not authorized!!!",
         });
       }
 
@@ -21,6 +21,7 @@ const authentication = (...roles: string[]) => {
       //       message: "Email verification required. Please verify your email",
       //     });
       //   }
+
       req.user = {
         id: session?.user.id as string,
         name: session?.user.name as string,
@@ -37,9 +38,8 @@ const authentication = (...roles: string[]) => {
           success: false,
           message: "Forbidden ! You don't have permission to access",
         });
-      } else {
-        next();
       }
+      next();
     } catch (error) {
       next(error);
     }

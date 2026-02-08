@@ -1,41 +1,39 @@
 model TutorProfile {
-    tutor_id       String   @id @default(uuid())
-    user_id        String   @unique
-    isFeatured     Boolean  @default(false)
-    isVerified     Boolean  @default(true)
-    about          String?
-    price          Int?
-    tutor_category String?
-    education      String[]
-    subjects       String[]
-    language       String[]
-
-    user     User        @relation(fields: [user_id], references: [id])
-    category Categories? @relation(fields: [tutor_category], references: [category_id])
-
-    availability AvailabilitySlot[]
-    bookings     Booking[]
-    reviews      Reviews[]
+  tutor_id       String             @id @default(uuid())
+  user_id        String             @unique
+  tutor_category String?
+  subjects       String[]
+  isFeatured     Boolean            @default(false)
+  price          Int?
+  about          String?
+  education      String[]
+  isVerified     Boolean            @default(false)
+  language       String[]
+  availability   AvailabilitySlot[]
+  bookings       Booking[]
+  reviews        Reviews[]
+  category       Categories?        @relation(fields: [tutor_category], references: [category_id])
+  user           User               @relation(fields: [user_id], references: [id])
 }
 
 model AvailabilitySlot {
-    id         String   @id @default(uuid())
-    tutor_id   String
-    start_time DateTime
-    end_time   DateTime
+  id         String       @id @default(uuid())
+  tutor_id   String
+  start_time DateTime
+  end_time   DateTime
+  tutor      TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
+  bookings   Booking[]
 
-    tutor TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
-
-    @@index([tutor_id, start_time, end_time])
+  @@index([tutor_id, start_time, end_time])
 }
 
 model Reviews {
-    id         String @id @default(uuid())
-    reviewText String
-    ratings    Float
-    tutor_id   String
-    student_id String
-
-    tutor   TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
-    student User         @relation(fields: [student_id], references: [id])
+  id         String       @id @default(uuid())
+  tutor_id   String
+  reviewText String
+  student_id String
+  ratings    Float
+  createdAt  DateTime     @default(now())
+  student    User         @relation(fields: [student_id], references: [id])
+  tutor      TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
 }

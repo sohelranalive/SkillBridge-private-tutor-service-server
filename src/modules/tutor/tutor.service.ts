@@ -5,19 +5,29 @@ import {
 import { TutorProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
-// Get all tutor
+// Get all tutor ✔✔✔
 const getAllTutor = async ({
   search,
   isFeatured,
-  subject,
   price,
   category,
+  ratings,
+  page,
+  limit,
+  skip,
+  sortBy,
+  sortOrder,
 }: {
   search: string | undefined;
   isFeatured: boolean | undefined;
-  subject: string | undefined;
   price: number | undefined;
   category: string | undefined;
+  ratings: number | undefined;
+  page: number;
+  limit: number;
+  skip: number;
+  sortBy: string;
+  sortOrder: string;
 }) => {
   const andConditions: TutorProfileWhereInput[] = [];
 
@@ -28,6 +38,8 @@ const getAllTutor = async ({
           subjects: {
             has: search as string,
           },
+        },
+        {
           category: {
             category_name: {
               contains: search as string,
@@ -45,18 +57,10 @@ const getAllTutor = async ({
     });
   }
 
-  if (subject) {
-    andConditions.push({
-      subjects: {
-        has: subject as string,
-      },
-    });
-  }
-
   if (price && price > 0) {
     const rate = Number(price);
     andConditions.push({
-      price: { in: [rate] },
+      price: { gte: rate },
     });
   }
 
@@ -71,22 +75,121 @@ const getAllTutor = async ({
     });
   }
 
+  andConditions.push({
+    isVerified: true,
+  });
+
   const result = await prisma.tutorProfile.findMany({
+    take: limit,
+    skip,
     where: {
       AND: andConditions,
     },
     include: {
-      user: true,
-      category: true,
+      user: {
+        select: {
+          name: true,
+          image: true,
+          role: true,
+          status: true,
+        },
+      },
+      category: {
+        select: {
+          category_name: true,
+        },
+      },
+      availability: {
+        select: {
+          id: true,
+          start_time: true,
+          end_time: true,
+        },
+      },
+      reviews: {
+        select: {
+          id: true,
+          reviewText: true,
+          ratings: true,
+          createdAt: true,
+          student: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      },
     },
     orderBy: {
-      price: "asc",
+      [sortBy]: sortOrder,
     },
   });
-  return result;
+
+  const count = await prisma.tutorProfile.count({
+    where: {
+      AND: andConditions,
+    },
+  });
+
+  const addAvgWithResult = result.map((tutor) => {
+    const avgRating = tutor.reviews.length
+      ? tutor.reviews.reduce((sum, review) => sum + review.ratings, 0) /
+        tutor.reviews.length
+      : 0;
+
+    return {
+      ...tutor,
+      avgRating: Number(avgRating.toFixed(2)),
+      reviewCount: tutor.reviews.length,
+    };
+  });
+
+  if (ratings && ratings > 0) {
+    let filteredResult = result.map((tutor) => {
+      const avgRating =
+        tutor.reviews.length > 0
+          ? tutor.reviews.reduce((sum, review) => sum + review.ratings, 0) /
+            tutor.reviews.length
+          : 0;
+
+      return {
+        ...tutor,
+        avgRating: Number(avgRating.toFixed(2)),
+        reviewCount: tutor.reviews.length,
+      };
+    });
+
+    filteredResult = filteredResult.filter(
+      (tutor) => tutor.avgRating >= ratings,
+    );
+
+    const paginatedResult = filteredResult.slice(skip, skip + limit);
+    const count = filteredResult.length;
+
+    return {
+      data: paginatedResult,
+      pagination: {
+        count,
+        page,
+        limit,
+        totalPage: Math.ceil(count / limit),
+      },
+    };
+  }
+
+  return {
+    data: addAvgWithResult,
+    pagination: {
+      count,
+      page,
+      limit,
+      totalPage: Math.ceil(count / limit),
+    },
+  };
 };
 
-// Get a single tutor by id
+// Get a single tutor by id ✔✔✔
 const getASingleTutorByID = async (id: string) => {
   const result = await prisma.tutorProfile.findUnique({
     where: {
@@ -106,6 +209,37 @@ const getASingleTutorByID = async (id: string) => {
           category_name: true,
         },
       },
+      availability: {
+        select: {
+          id: true,
+          start_time: true,
+          end_time: true,
+        },
+      },
+      reviews: {
+        select: {
+          id: true,
+          reviewText: true,
+          ratings: true,
+          createdAt: true,
+          student: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  return result;
+};
+
+// Get tutor by user id ✔✔✔
+const getTutorByUserId = async (id: string) => {
+  const result = await prisma.tutorProfile.findUnique({
+    where: {
+      user_id: id,
     },
   });
   return result;
@@ -152,6 +286,7 @@ const tutorSessionsById = async (id: string) => {
 export const tutorService = {
   tutorSessionsById,
   setTutorAvailability,
+  getTutorByUserId,
   getAllTutor,
   getASingleTutorByID,
   updateTutorProfileByID,

@@ -6,10 +6,10 @@ declare global {
         name: string;
         email: string;
         emailVerified: boolean;
-        image: String;
-        phone: String;
+        image: string;
+        phone: string;
         role: string;
-        status: String;
+        status: string;
       };
     }
   }

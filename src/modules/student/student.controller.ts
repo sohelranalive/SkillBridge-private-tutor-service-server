@@ -55,15 +55,23 @@ const createBooking = async (
   }
 };
 
-// Get all booking by Id
-const getAllBookingById = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const result = await studentService.getAllBookingById(id as string);
+// Get all booking by student Id ✔✔✔
+const getAllBookingByStudentId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const id = req.params.id;
+    const result = await studentService.getAllBookingByStudentId(id as string);
 
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
 };
 
 // get all students
@@ -78,7 +86,7 @@ const getAllStudents = async (req: Request, res: Response) => {
 
 export const studentController = {
   getAllReviews,
-  getAllBookingById,
+  getAllBookingByStudentId,
   getBooking,
   createBooking,
   getAllStudents,

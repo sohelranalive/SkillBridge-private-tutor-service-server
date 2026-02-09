@@ -17,11 +17,11 @@ router.post(
   studentController.createBooking,
 );
 
-// Get all booking by Id
+// Get all booking by student Id ✔✔✔
 router.get(
   "/all-booking/:id",
   authentication("STUDENT"),
-  studentController.getAllBookingById,
+  studentController.getAllBookingByStudentId,
 );
 
 // get all students

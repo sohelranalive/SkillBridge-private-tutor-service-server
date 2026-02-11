@@ -16,13 +16,32 @@ const allCategory = async () => {
   return result;
 };
 
-// view all bookings
+// View all bookings ✔✔✔
 const getAllBookings = async () => {
-  const result = await prisma.booking.findMany();
+  const result = await prisma.booking.findMany({
+    include: {
+      student: true,
+      tutor: {
+        include: {
+          user: true,
+        },
+      },
+    },
+  });
   return result;
 };
 
-// Update user status
+// View all users ✔✔✔
+const getAllUsers = async () => {
+  const result = await prisma.user.findMany({
+    include: {
+      tutor: true,
+    },
+  });
+  return result;
+};
+
+// Update user status by id ✔✔✔
 const updateUserStatusById = async (id: string, data: UserStatus) => {
   const result = await prisma.user.update({
     where: {
@@ -31,10 +50,23 @@ const updateUserStatusById = async (id: string, data: UserStatus) => {
     data,
   });
 
+  console.log(result);
+
   return result;
 };
 
-// add new category
+// Delete Category ✔✔✔
+const deleteCategory = async (id: string) => {
+  const result = await prisma.categories.delete({
+    where: {
+      category_id: id,
+    },
+  });
+
+  return result;
+};
+
+// Add new category ✔✔✔
 const addNewCategory = async (data: any) => {
   const result = await prisma.categories.create({
     data,
@@ -43,7 +75,7 @@ const addNewCategory = async (data: any) => {
   return result;
 };
 
-// update category
+// Update category ✔✔✔
 const updateCategory = async (id: string, data: any) => {
   const result = await prisma.categories.update({
     where: {
@@ -56,9 +88,11 @@ const updateCategory = async (id: string, data: any) => {
 };
 
 export const adminService = {
-  addNewCategory,
-  getAllBookings,
-  updateUserStatusById,
-  updateCategory,
   allCategory,
+  getAllBookings,
+  getAllUsers,
+  updateUserStatusById,
+  deleteCategory,
+  addNewCategory,
+  updateCategory,
 };

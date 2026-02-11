@@ -7,32 +7,42 @@ const router = express.Router();
 // Get all category ✔✔✔
 router.get("/all-category", adminController.allCategory);
 
-// view all bookings
+// View all bookings ✔✔✔
 router.get(
   "/all-bookings",
   authentication("ADMIN"),
   adminController.getAllBookings,
 );
 
-// update user status
+// View all users ✔✔✔
+router.get("/all-users", authentication("ADMIN"), adminController.getAllUsers);
+
+// Update user status by id ✔✔✔
 router.patch(
   "/user-update/:id",
   authentication("ADMIN"),
   adminController.updateUserStatusById,
 );
 
-// add a new category
+// Delete Category ✔✔✔
+router.delete(
+  "/delete-category",
+  authentication("ADMIN"),
+  adminController.deleteCategory,
+);
+
+// Add a new category
 router.post(
   "/add-category",
   authentication("ADMIN"),
   adminController.addNewCategory,
 );
 
-// update category by id
-router.post(
+// Update category ✔✔✔
+router.patch(
   "/update-category/:id",
   authentication("ADMIN"),
-  adminController.addNewCategory,
+  adminController.updateCategory,
 );
 
 export const adminRouter = router;

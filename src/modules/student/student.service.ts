@@ -1,4 +1,4 @@
-import { Booking } from "../../../generated/prisma/client";
+import { Booking, Reviews } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 // Get all reviews ✔✔✔
@@ -67,26 +67,68 @@ const getAllBookingByStudentId = async (id: string) => {
       availability: true,
     },
   });
+
   return result;
 };
 
-// Get aLL students
-const getAllStudents = async () => {
-  const result = await prisma.user.findMany({
+// Get all reviews by student Id ✔✔✔
+const getAllReviewsByStudentId = async (id: string) => {
+  const result = await prisma.reviews.findMany({
     where: {
-      role: "STUDENT",
+      student_id: id,
     },
     include: {
-      bookings: true,
+      tutor: {
+        include: {
+          user: true,
+        },
+      },
     },
   });
   return result;
 };
 
+// Delete Reviews ✔✔✔
+const deleteReview = async (id: string) => {
+  const result = await prisma.reviews.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  return result;
+};
+
+// Update Reviews ✔✔✔
+const updateReview = async (id: string, data: Partial<Reviews>) => {
+  const result = await prisma.reviews.update({
+    where: {
+      id: id,
+    },
+    data,
+  });
+
+  return result;
+};
+
+// Write Review ✔✔✔
+const writeReview = async (data: Reviews) => {
+  const result = await prisma.reviews.create({
+    data: {
+      ...data,
+    },
+  });
+
+  return result;
+};
+
 export const studentService = {
   getAllReviews,
-  getAllBookingByStudentId,
   getBooking,
   createBooking,
-  getAllStudents,
+  getAllBookingByStudentId,
+  getAllReviewsByStudentId,
+  deleteReview,
+  updateReview,
+  writeReview,
 };

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { tutorService } from "./tutor.service";
 import { TutorProfile } from "../../../generated/prisma/client";
 import paginationHelper from "../../helpers/paginationHelper";
@@ -51,10 +51,10 @@ const getAllTutor = async (req: Request, res: Response) => {
 };
 
 // Get a single tutor by id ✔✔✔
-const getASingleTutorByID = async (req: Request, res: Response) => {
+const getASingleTutorById = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const result = await tutorService.getASingleTutorByID(id as string);
+    const result = await tutorService.getASingleTutorById(id as string);
 
     res.status(200).json({
       message: "Data retrieved successfully",
@@ -68,34 +68,46 @@ const getASingleTutorByID = async (req: Request, res: Response) => {
   }
 };
 
-// Get tutor by user id ✔✔✔
-const getTutorByUserId = async (req: Request, res: Response) => {
+// Get tutor profile by user id ✔✔✔
+const getTutorProfileByUserId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const id = req.params.id;
-    const result = await tutorService.getTutorByUserId(id as string);
+    const result = await tutorService.getTutorProfileByUserId(id as string);
 
     res.status(200).json({
       message: "Data retrieved successfully",
       data: result,
     });
   } catch (error: any) {
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
+    next(error);
   }
 };
 
-// Update tutor profile
-const updateTutorProfileByID = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const data = req.body;
-  const result = await tutorService.updateTutorProfileByID(id as string, data);
+// Update tutor profile by id ✔✔✔
+const updateTutorProfileById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    const result = await tutorService.updateTutorProfileById(
+      id as string,
+      data,
+    );
 
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
+    res.status(200).json({
+      message: "Data updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // Set tutors Availability
@@ -120,10 +132,10 @@ const tutorSessionsById = async (req: Request, res: Response) => {
 };
 
 export const tutorController = {
+  getAllTutor,
+  getASingleTutorById,
+  getTutorProfileByUserId,
+  updateTutorProfileById,
   tutorSessionsById,
   setTutorAvailability,
-  getAllTutor,
-  getASingleTutorByID,
-  getTutorByUserId,
-  updateTutorProfileByID,
 };

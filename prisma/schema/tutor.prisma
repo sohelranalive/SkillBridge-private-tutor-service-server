@@ -21,9 +21,11 @@ model AvailabilitySlot {
   tutor_id   String
   start_time DateTime
   end_time   DateTime
+  subject    String
   tutor      TutorProfile @relation(fields: [tutor_id], references: [tutor_id])
   bookings   Booking[]
 
+  @@unique([tutor_id, start_time, end_time, subject])
   @@index([tutor_id, start_time, end_time])
 }
 

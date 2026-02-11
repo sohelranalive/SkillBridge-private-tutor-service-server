@@ -74,20 +74,88 @@ const getAllBookingByStudentId = async (
   }
 };
 
-// get all students
-const getAllStudents = async (req: Request, res: Response) => {
-  const result = await studentService.getAllStudents();
+// Get all reviews by student Id ✔✔✔
+const getAllReviewsByStudentId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const id = req.params.id;
+    const result = await studentService.getAllReviewsByStudentId(id as string);
 
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+// Delete Reviews ✔✔✔
+const deleteReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const id = req.params.id;
+    const result = await studentService.deleteReview(id as string);
+
+    res.status(204).json({
+      message: "Content deleted successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+// Update Reviews ✔✔✔
+const updateReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const id = req.params.id;
+    const data = req.body;
+    const result = await studentService.updateReview(id as string, data);
+
+    console.log(result);
+
+    res.status(200).json({
+      message: "Reviews updated successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+// Write Review ✔✔✔
+const writeReview = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = req.body;
+    const result = await studentService.writeReview(data);
+
+    res.status(201).json({
+      message: "Data creation successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
 };
 
 export const studentController = {
   getAllReviews,
-  getAllBookingByStudentId,
   getBooking,
   createBooking,
-  getAllStudents,
+  getAllBookingByStudentId,
+  getAllReviewsByStudentId,
+  deleteReview,
+  updateReview,
+  writeReview,
 };

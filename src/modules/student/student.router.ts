@@ -24,7 +24,32 @@ router.get(
   studentController.getAllBookingByStudentId,
 );
 
-// get all students
-router.get("/all-students", studentController.getAllStudents);
+// Get all reviews by student Id ✔✔✔
+router.get(
+  "/all-reviews/:id",
+  authentication("STUDENT"),
+  studentController.getAllReviewsByStudentId,
+);
+
+// Delete reviews ✔✔✔
+router.delete(
+  "/delete-review/:id",
+  authentication("STUDENT"),
+  studentController.deleteReview,
+);
+
+// Update reviews ✔✔✔
+router.patch(
+  "/update-review/:id",
+  authentication("STUDENT"),
+  studentController.updateReview,
+);
+
+// Write Review ✔✔✔
+router.post(
+  "/write-review",
+  authentication("STUDENT"),
+  studentController.writeReview,
+);
 
 export const studentRouter = router;

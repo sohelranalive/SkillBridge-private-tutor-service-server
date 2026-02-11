@@ -190,7 +190,7 @@ const getAllTutor = async ({
 };
 
 // Get a single tutor by id ✔✔✔
-const getASingleTutorByID = async (id: string) => {
+const getASingleTutorById = async (id: string) => {
   const result = await prisma.tutorProfile.findUnique({
     where: {
       tutor_id: id,
@@ -214,6 +214,7 @@ const getASingleTutorByID = async (id: string) => {
           id: true,
           start_time: true,
           end_time: true,
+          subject: true,
         },
       },
       reviews: {
@@ -235,8 +236,8 @@ const getASingleTutorByID = async (id: string) => {
   return result;
 };
 
-// Get tutor by user id ✔✔✔
-const getTutorByUserId = async (id: string) => {
+// Get tutor profile by user id ✔✔✔
+const getTutorProfileByUserId = async (id: string) => {
   const result = await prisma.tutorProfile.findUnique({
     where: {
       user_id: id,
@@ -245,8 +246,8 @@ const getTutorByUserId = async (id: string) => {
   return result;
 };
 
-// Update tutor profile
-const updateTutorProfileByID = async (
+// Update tutor profile by id ✔✔✔
+const updateTutorProfileById = async (
   id: string,
   data: Partial<TutorProfile>,
 ) => {
@@ -284,10 +285,10 @@ const tutorSessionsById = async (id: string) => {
 };
 
 export const tutorService = {
+  getAllTutor,
+  getASingleTutorById,
+  getTutorProfileByUserId,
+  updateTutorProfileById,
   tutorSessionsById,
   setTutorAvailability,
-  getTutorByUserId,
-  getAllTutor,
-  getASingleTutorByID,
-  updateTutorProfileByID,
 };

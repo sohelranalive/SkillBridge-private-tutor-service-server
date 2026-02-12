@@ -260,7 +260,71 @@ const updateTutorProfileById = async (
   return result;
 };
 
-// Set tutors availability
+// Get all booking by tutor Id ✔✔✔
+const getAllBookingByTutorId = async (id: string) => {
+  const result = await prisma.booking.findMany({
+    where: {
+      tutor_id: id,
+    },
+    include: {
+      tutor: {
+        include: {
+          user: true,
+        },
+      },
+      student: true,
+      availability: true,
+    },
+  });
+
+  return result;
+};
+
+// Get all booking by tutor Id ✔✔✔
+const getAllReviewsByTutorId = async (id: string) => {
+  const result = await prisma.reviews.findMany({
+    where: {
+      tutor_id: id,
+    },
+    include: {
+      student: true,
+    },
+  });
+  return result;
+};
+
+// Get tutors availability ✔✔✔
+const getTutorAvailability = async (id: string) => {
+  const result = await prisma.availabilitySlot.findMany({
+    where: {
+      tutor_id: id,
+    },
+  });
+  return result;
+};
+
+// Delete tutors availability ✔✔✔
+const deleteTutorAvailability = async (id: string) => {
+  const booking = await prisma.booking.findMany({
+    where: {
+      availability_id: id,
+    },
+  });
+
+  if (booking.length) {
+    return "Booking exists";
+  }
+
+  const result = await prisma.availabilitySlot.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  return result;
+};
+
+// Set tutors availability ✔✔✔
 const setTutorAvailability = async (data: any) => {
   const result = await prisma.availabilitySlot.create({
     data: {
@@ -270,25 +334,14 @@ const setTutorAvailability = async (data: any) => {
   return result;
 };
 
-// tutors all sessions
-const tutorSessionsById = async (id: string) => {
-  const result = await prisma.tutorProfile.findUniqueOrThrow({
-    where: {
-      user_id: id,
-    },
-    include: {
-      availability: true,
-    },
-  });
-
-  return result;
-};
-
 export const tutorService = {
   getAllTutor,
   getASingleTutorById,
   getTutorProfileByUserId,
   updateTutorProfileById,
-  tutorSessionsById,
+  getAllBookingByTutorId,
+  getAllReviewsByTutorId,
+  getTutorAvailability,
+  deleteTutorAvailability,
   setTutorAvailability,
 };

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { tutorController } from "./tutor.controller";
 import authentication from "../../middleware/authentication";
 
@@ -24,16 +24,38 @@ router.patch(
   tutorController.updateTutorProfileById,
 );
 
-// tutors sessions
+// Get all booking by tutor Id ✔✔✔
 router.get(
-  "/sessions",
+  "/all-bookings/:id",
   authentication("TUTOR"),
-  tutorController.tutorSessionsById,
+  tutorController.getAllBookingByTutorId,
 );
 
-// Set availability
+// Get all reviews ✔✔✔
+router.get(
+  "/all-reviews/:id",
+  authentication("TUTOR"),
+  tutorController.getAllReviewsByTutorId,
+);
+
+// Get tutors availability ✔✔✔
+router.get(
+  "/availability/:id",
+  authentication("TUTOR"),
+  tutorController.getTutorAvailability,
+);
+
+// Delete tutors availability ✔✔✔
+router.delete(
+  "/delete-availability/:id",
+  authentication("TUTOR"),
+  tutorController.deleteTutorAvailability,
+);
+
+// Set tutors availability ✔✔✔
 router.post(
-  "/tutor-profile/availability",
+  "/tutor-availability",
+  authentication("TUTOR"),
   tutorController.setTutorAvailability,
 );
 

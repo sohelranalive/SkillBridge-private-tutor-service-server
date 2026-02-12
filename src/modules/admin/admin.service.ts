@@ -49,9 +49,6 @@ const updateUserStatusById = async (id: string, data: UserStatus) => {
     },
     data,
   });
-
-  console.log(result);
-
   return result;
 };
 

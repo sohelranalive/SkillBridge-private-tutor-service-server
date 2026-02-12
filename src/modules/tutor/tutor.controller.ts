@@ -110,25 +110,111 @@ const updateTutorProfileById = async (
   }
 };
 
-// Set tutors Availability
-const setTutorAvailability = async (req: Request, res: Response) => {
-  const data = req.body;
-  const result = await tutorService.setTutorAvailability(data);
+// Get all booking by tutor Id ✔✔✔
+const getAllBookingByTutorId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const id = req.params.id;
+    const result = await tutorService.getAllBookingByTutorId(id as string);
 
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
 };
 
-// tutors all sessions
-const tutorSessionsById = async (req: Request, res: Response) => {
-  const userId = req.user?.id;
-  const result = await tutorService.tutorSessionsById(userId as string);
-  res.status(200).json({
-    message: "Data retrieved successfully",
-    data: result,
-  });
+// Get all booking by tutor Id ✔✔✔
+const getAllReviewsByTutorId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const tutorId = req.params.id;
+
+    const result = await tutorService.getAllReviewsByTutorId(tutorId as string);
+
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+// Get tutors availability ✔✔✔
+const getTutorAvailability = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const tutorId = req.params.id;
+
+    const result = await tutorService.getTutorAvailability(tutorId as string);
+
+    res.status(200).json({
+      message: "Data retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+// Delete tutors availability ✔✔✔
+const deleteTutorAvailability = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const availabilityId = req.params.id;
+
+    const result = await tutorService.deleteTutorAvailability(
+      availabilityId as string,
+    );
+
+    if (result == "Booking exists") {
+      res.status(404).json({
+        message: "Booking exits",
+        data: result,
+      });
+    } else {
+      res.status(204).json({
+        message: "Data deleted successfully",
+        data: result,
+      });
+    }
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+// Set tutors availability ✔✔✔
+const setTutorAvailability = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = req.body;
+    const result = await tutorService.setTutorAvailability(data);
+
+    res.status(201).json({
+      message: "Data created successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    next(error);
+  }
 };
 
 export const tutorController = {
@@ -136,6 +222,9 @@ export const tutorController = {
   getASingleTutorById,
   getTutorProfileByUserId,
   updateTutorProfileById,
-  tutorSessionsById,
+  getAllBookingByTutorId,
+  getAllReviewsByTutorId,
+  getTutorAvailability,
+  deleteTutorAvailability,
   setTutorAvailability,
 };

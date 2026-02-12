@@ -123,8 +123,6 @@ const updateReview = async (
     const data = req.body;
     const result = await studentService.updateReview(id as string, data);
 
-    console.log(result);
-
     res.status(200).json({
       message: "Reviews updated successfully",
       data: result,

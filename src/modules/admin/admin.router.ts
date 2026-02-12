@@ -26,12 +26,12 @@ router.patch(
 
 // Delete Category ✔✔✔
 router.delete(
-  "/delete-category",
+  "/delete-category/:id",
   authentication("ADMIN"),
   adminController.deleteCategory,
 );
 
-// Add a new category
+// Add a new category ✔✔✔
 router.post(
   "/add-category",
   authentication("ADMIN"),

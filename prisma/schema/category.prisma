@@ -1,5 +1,5 @@
 model Categories {
   category_id   String         @id @default(uuid())
-  category_name String
+  category_name String         @unique
   tutor         TutorProfile[]
 }

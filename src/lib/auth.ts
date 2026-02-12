@@ -20,7 +20,31 @@ export const auth = betterAuth({
     },
     disableCSRFCheck: true, // Allow requests without Origin header (Postman, mobile apps, etc.)
   },
-  trustedOrigins: [process.env.APP_AUTH_URL as string],
+  trustedOrigins: async (request) => {
+    const origin = request?.headers.get("origin");
+
+    const allowedOrigins = [
+      process.env.APP_URL,
+      process.env.BETTER_AUTH_URL,
+      "http://localhost:3000",
+      "http://localhost:4000",
+      "http://localhost:5000",
+      "https://next-blog-client-part-6.vercel.app",
+      "https://prisma-blog-server-navy.vercel.app",
+    ].filter(Boolean);
+
+    // Check if origin matches allowed origins or Vercel pattern
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      /^https:\/\/.*\.vercel\.app$/.test(origin)
+    ) {
+      return [origin];
+    }
+
+    return [];
+  },
+  basePath: "/api/auth",
   user: {
     additionalFields: {
       phone: {
